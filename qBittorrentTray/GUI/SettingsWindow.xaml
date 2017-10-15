@@ -180,7 +180,7 @@
         <Label Content="Password: " Margin="20,168,0,0" Style="{DynamicResource LabelStyle}" RenderTransformOrigin="0.979,0.637"/>
         <PasswordBox x:Name="PasswordTextBox" Margin="25,198,0,0" Style="{DynamicResource PasswordBoxStyle}" Width="221"/>
 
-        <CheckBox x:Name="autostartCheckbox" Content="Run OutputChanger at system startup" HorizontalAlignment="Left" Margin="30,0,0,20" VerticalAlignment="Bottom" Foreground="White" FontSize="14" IsChecked="True" Style="{DynamicResource CheckBoxStyle}" Width="257" VerticalContentAlignment="Center" />
+        <CheckBox x:Name="autostartCheckbox" Content="Run qBittorrentTray at system startup" HorizontalAlignment="Left" Margin="30,0,0,20" VerticalAlignment="Bottom" Foreground="White" FontSize="14" IsChecked="True" Style="{DynamicResource CheckBoxStyle}" Width="257" VerticalContentAlignment="Center" />
 
         <Button x:Name="saveButton" Content="Save" HorizontalAlignment="Right" Margin="0,0,140,20"
                 VerticalAlignment="Bottom" Width="90" Style="{DynamicResource ButtonStyle}" FontSize="15"
