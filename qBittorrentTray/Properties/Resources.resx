@@ -136,4 +136,10 @@
   <data name="qb" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\qb.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="qbdark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\qbdark.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="qblight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\qblight.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

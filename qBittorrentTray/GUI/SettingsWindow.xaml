@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:qBittorrentTray.GUI"
     mc:Ignorable="d"
-    Title="Settings" Icon="/qBittorrentTray;component/Resources/qb.ico"
+    Title="Settings" Icon="/qBittorrentTray;component/Resources/qbdark.ico"
     Height="407.187" Width="554.391" Background="#FF303D4B" WindowStyle="ToolWindow" ResizeMode="NoResize">
 
     <local:ToolWindow.Resources>
@@ -172,13 +172,13 @@
     <Grid>
 
         <Label Content="Host: " Margin="20,28,0,0" Style="{DynamicResource LabelStyle}" RenderTransformOrigin="0.979,0.637"/>
-        <TextBox x:Name="HostTextBox" Margin="25,58,0,0" Style="{DynamicResource TextBoxStyle}" Width="221"/>
+        <TextBox x:Name="HostTextBox" Margin="25,58,0,0" Style="{DynamicResource TextBoxStyle}" Width="300"/>
 
         <Label Content="Username: " Margin="20,98,0,0" Style="{DynamicResource LabelStyle}" RenderTransformOrigin="0.979,0.637"/>
-        <TextBox x:Name="UsernameTextBox" Margin="25,128,0,0" Style="{DynamicResource TextBoxStyle}" Width="221"/>
+        <TextBox x:Name="UsernameTextBox" Margin="25,128,0,0" Style="{DynamicResource TextBoxStyle}" Width="300"/>
 
         <Label Content="Password: " Margin="20,168,0,0" Style="{DynamicResource LabelStyle}" RenderTransformOrigin="0.979,0.637"/>
-        <PasswordBox x:Name="PasswordTextBox" Margin="25,198,0,0" Style="{DynamicResource PasswordBoxStyle}" Width="221"/>
+        <PasswordBox x:Name="PasswordTextBox" Margin="25,198,0,0" Style="{DynamicResource PasswordBoxStyle}" Width="300"/>
 
         <CheckBox x:Name="autostartCheckbox" Content="Run qBittorrentTray at system startup" HorizontalAlignment="Left" Margin="30,0,0,20" VerticalAlignment="Bottom" Foreground="White" FontSize="14" IsChecked="True" Style="{DynamicResource CheckBoxStyle}" Width="257" VerticalContentAlignment="Center" />
 
@@ -188,7 +188,7 @@
         <Button x:Name="cancelButton" Content="Cancel" Margin="0,0,30,20"
                 VerticalAlignment="Bottom" Width="90" Style="{DynamicResource ButtonStyle}" FontSize="15"
                 Foreground="White" Height="30" Click="CancelButton_Click" HorizontalAlignment="Right" />
-        <Image x:Name="InvalidHost" HorizontalAlignment="Left" Height="24" Margin="255,58,0,0" VerticalAlignment="Top" Width="24" Source="/qBittorrentTray;component/Resources/invalid.png" Visibility="Hidden"/>
+        <Image x:Name="InvalidHost" HorizontalAlignment="Left" Height="24" Margin="335,58,0,0" VerticalAlignment="Top" Width="24" Source="/qBittorrentTray;component/Resources/invalid.png" Visibility="Hidden"/>
 
 
     </Grid>

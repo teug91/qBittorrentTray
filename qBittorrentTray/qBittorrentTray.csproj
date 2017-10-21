@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\qb.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\qblight.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
@@ -132,6 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\invalid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\qbdark.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\qblight.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

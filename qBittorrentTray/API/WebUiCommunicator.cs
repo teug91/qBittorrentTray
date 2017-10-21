@@ -141,8 +141,7 @@ namespace qBittorrentTray.API
                     {
                         string session = values.First();
                         Match cleanedup = Regex.Match(session, @"^.*?(?=;)");
-                        /*Debug.WriteLine("Dirty : " + session);
-                        Debug.WriteLine("Cookie: " + cleanedup.ToString());*/
+
                         cookie = cleanedup.ToString();
                     }
                 }

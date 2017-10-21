@@ -60,7 +60,15 @@ namespace qBittorrentTray.Core
         /// <param name="autoStart"></param>
         internal static void SaveSettings(Uri host, string username, string password, bool? autoStart = null)
         {
-            Settings.Default.Host = host;
+            var hostString = host.ToString();
+            if (hostString[hostString.Length - 1] != '/')
+            {
+                hostString += "/";
+                Settings.Default.Host = new Uri(hostString);
+            }
+            else
+                Settings.Default.Host = host;
+
             Settings.Default.Username = username;
             Settings.Default.Password = password;
 

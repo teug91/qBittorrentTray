@@ -119,5 +119,25 @@ namespace qBittorrentTray.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon qbdark {
+            get {
+                object obj = ResourceManager.GetObject("qbdark", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon qblight {
+            get {
+                object obj = ResourceManager.GetObject("qblight", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

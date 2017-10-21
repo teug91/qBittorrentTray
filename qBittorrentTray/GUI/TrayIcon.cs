@@ -9,7 +9,7 @@ namespace qBittorrentTray.GUI
 {
     internal class TrayIcon : INotifyPropertyChanged
     {
-        string icon = "/qBittorrentTray;component/Resources/dc.ico";
+        string icon = "/qBittorrentTray;component/Resources/qbdark.ico";
 
         public TrayIcon()
         {
@@ -33,7 +33,7 @@ namespace qBittorrentTray.GUI
 
                 if (isPaused == false)
                 {
-                    Icon = "/qBittorrentTray;component/Resources/qb.ico";
+                    Icon = "/qBittorrentTray;component/Resources/qbdark.ico";
                     OnPropertyChanged("Icon");
                 }
 
