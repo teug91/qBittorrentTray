@@ -57,5 +57,17 @@ namespace qBittorrentTray.Properties {
                 this["Password"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15.00:00:00")]
+        public global::System.TimeSpan MaxSeedingTime {
+            get {
+                return ((global::System.TimeSpan)(this["MaxSeedingTime"]));
+            }
+            set {
+                this["MaxSeedingTime"] = value;
+            }
+        }
     }
 }

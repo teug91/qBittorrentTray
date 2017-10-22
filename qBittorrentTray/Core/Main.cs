@@ -1,8 +1,10 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
 using qBittorrentTray.API;
 using qBittorrentTray.Properties;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 
 namespace qBittorrentTray.Core
@@ -29,6 +31,30 @@ namespace qBittorrentTray.Core
                 Init();
 
             notifyIcon = (TaskbarIcon) Application.Current.FindResource("NotifyIcon");
+            notifyIcon.TrayBalloonTipClicked += TrayBalloonTipClicked;
+
+            Timer initializationTimer = new Timer(60000);
+            initializationTimer.Elapsed += CheckSeedTime;
+            initializationTimer.Enabled = true;
+            GC.KeepAlive(initializationTimer);
+        }
+
+        private async void CheckSeedTime(object sender, ElapsedEventArgs e)
+        {
+            await WebUiCommunicator.DeleteAfterMaxSeedingTime();
+        }
+
+        private void TrayBalloonTipClicked(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current.MainWindow != null)
+                Application.Current.MainWindow.Activate();
+
+            else
+            {
+                Application.Current.MainWindow = new GUI.SettingsWindow();
+                Application.Current.MainWindow.Show();
+                Application.Current.MainWindow.Activate();
+            }
         }
 
         /// <summary>
@@ -37,6 +63,7 @@ namespace qBittorrentTray.Core
         private async void Init()
         {
             bool? loggedInn = await WebUiCommunicator.Login();
+            await WebUiCommunicator.DeleteAfterMaxSeedingTime();
 
             if (loggedInn == null)
             {
@@ -53,23 +80,15 @@ namespace qBittorrentTray.Core
         /// Pauses or resumes all torrents.
         /// </summary>
         /// <returns></returns>
-        public static async Task<string> PauseResume()
+        public static async Task PauseResume()
         {
             bool? isPaused = await WebUiCommunicator.IsPaused();
 
             if (isPaused == true)
-            {
                 await WebUiCommunicator.ResumeAll();
-                return "/qBittorrentTray;component/Resources/qb.ico";
-            }
 
             else if (isPaused == false)
-            {
                 await WebUiCommunicator.PauseAll();
-                return "/qBittorrentTray;component/Resources/pause.ico";
-            }
-
-            return "";
         }
 
         /// <summary>

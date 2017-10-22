@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -13,8 +12,7 @@ namespace qBittorrentTray.GUI
 
         public TrayIcon()
         {
-            
-            Timer initializationTimer = new Timer(3000);
+            Timer initializationTimer = new Timer(1000);
             initializationTimer.Elapsed += SetIcon;
             initializationTimer.Enabled = true;
             GC.KeepAlive(initializationTimer);
@@ -89,13 +87,7 @@ namespace qBittorrentTray.GUI
                 {
                     CommandAction = async () =>
                     {
-                        string newIcon = await Core.Main.PauseResume();
-
-                        if (newIcon != "")
-                        {
-                            Icon = newIcon;
-                            OnPropertyChanged("Icon");
-                        }
+                        await Core.Main.PauseResume();
                     }
                 };
             }

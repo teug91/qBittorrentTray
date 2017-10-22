@@ -22,6 +22,11 @@ namespace qBittorrentTray.Core
             return Settings.Default.Password;
         }
 
+        internal static TimeSpan GetMaxSeedingTime()
+        {
+            return Settings.Default.MaxSeedingTime;
+        }
+
         /// <summary>
         /// Gets autostart setting. Fixes path, If path in registry key is wrong.
         /// </summary>

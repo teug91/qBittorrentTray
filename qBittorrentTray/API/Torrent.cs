@@ -10,13 +10,10 @@ namespace qBittorrentTray.API
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("progress")]
-        public int Progress { get; set; }
-
-        [JsonProperty("eta")]
-        public int Eta { get; set; }
-
         [JsonProperty("state")]
         public string State { get; set; }
+
+        [JsonProperty("seeding_time")]
+        public int SeedingTime { get; set; }
     }
 }

@@ -1,11 +1,8 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
-using qBittorrentTray.Core;
+﻿using qBittorrentTray.Core;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
+using System.Threading;
 using System.Windows;
 
 namespace qBittorrentTray
@@ -22,11 +19,10 @@ namespace qBittorrentTray
         /// Creates tray icon and starts listening for input.
         /// </summary>
         /// <param name="e"></param>
+        [STAThread]
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            //notifyIcon = (TaskbarIcon)FindResource("NotifyIcon");
 
             main = new Main();
         }
@@ -39,6 +35,24 @@ namespace qBittorrentTray
         {
             main.notifyIcon.Dispose();
             base.OnExit(e);
+        }
+
+        /// 
+        /// check if given exe alread running or not
+        /// 
+        /// returns true if already running
+        private static bool IsAlreadyRunning()
+        {
+            string strLoc = Assembly.GetExecutingAssembly().Location;
+            FileSystemInfo fileInfo = new FileInfo(strLoc);
+            string sExeName = fileInfo.Name;
+            bool bCreatedNew;
+
+            Mutex mutex = new Mutex(true, "Global\\" + sExeName, out bCreatedNew);
+            if (bCreatedNew)
+                mutex.ReleaseMutex();
+
+            return !bCreatedNew;
         }
     }
 }
