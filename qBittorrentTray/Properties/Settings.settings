@@ -11,8 +11,11 @@
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="MaxSeedingTime" Type="System.TimeSpan" Scope="User">
-      <Value Profile="(Default)">15.00:00:00</Value>
+    <Setting Name="MaxSeedingDays" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Action" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Do nothing</Value>
     </Setting>
   </Settings>
 </SettingsFile>

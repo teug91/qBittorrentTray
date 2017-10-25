@@ -22,9 +22,14 @@ namespace qBittorrentTray.Core
             return Settings.Default.Password;
         }
 
-        internal static TimeSpan GetMaxSeedingTime()
+        internal static int GetMaxSeedingTime()
         {
-            return Settings.Default.MaxSeedingTime;
+            return Settings.Default.MaxSeedingDays;
+        }
+
+        internal static string GetAction()
+        {
+            return Settings.Default.Action;
         }
 
         /// <summary>
@@ -63,7 +68,7 @@ namespace qBittorrentTray.Core
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="autoStart"></param>
-        internal static void SaveSettings(Uri host, string username, string password, bool? autoStart = null)
+        internal static void SaveSettings(Uri host, string username, string password, int MaxSeedDays, string action, bool? autoStart = null)
         {
             var hostString = host.ToString();
             if (hostString[hostString.Length - 1] != '/')
@@ -76,6 +81,9 @@ namespace qBittorrentTray.Core
 
             Settings.Default.Username = username;
             Settings.Default.Password = password;
+            Settings.Default.MaxSeedingDays = MaxSeedDays;
+            Settings.Default.Action = action;
+
 
             if (autoStart != null)
                 SetAutoStart(autoStart);

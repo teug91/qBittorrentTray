@@ -1,5 +1,6 @@
 ﻿using qBittorrentTray.Core;
 using System;
+using System.Diagnostics;
 using System.Windows;
 
 namespace qBittorrentTray.GUI
@@ -23,6 +24,22 @@ namespace qBittorrentTray.GUI
                 PasswordTextBox.Password = SettingsManager.GetPassword();
 
             InitializeAutoStartCheckbox();
+
+            InitializeCheckBox();
+        }
+
+        private void InitializeCheckBox()
+        {
+            ActionComboBox.Items.Add(Actions.Nothing);
+            ActionComboBox.Items.Add(Actions.Delete);
+            ActionComboBox.Items.Add(Actions.DeleteAll);
+
+            ActionComboBox.SelectedItem = SettingsManager.GetAction();
+
+            for (var i = 0; i < 100; i++)
+                DaysComboBox.Items.Add(i);
+
+            DaysComboBox.SelectedItem = SettingsManager.GetMaxSeedingTime();
         }
 
         /// <summary>
@@ -56,7 +73,8 @@ namespace qBittorrentTray.GUI
 
             else
             {
-                SettingsManager.SaveSettings(newHost, UsernameTextBox.Text, PasswordTextBox.Password, autoStart);
+                SettingsManager.SaveSettings(newHost, UsernameTextBox.Text, PasswordTextBox.Password,
+                    (int) DaysComboBox.SelectedItem, (string) ActionComboBox.SelectedItem, autoStart);
                 Close();
             }
         }

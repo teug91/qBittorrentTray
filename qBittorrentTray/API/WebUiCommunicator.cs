@@ -237,7 +237,7 @@ namespace qBittorrentTray.API
                 await DeleteTorrents(hashes);
         }
 
-        private static async Task<TimeSpan?> GetSeedingTimeSpan(string hash)
+        private static async Task<int?> GetSeedingTimeSpan(string hash)
         {
             var result = await Post("/query/propertiesGeneral/" + hash);
 
@@ -245,8 +245,7 @@ namespace qBittorrentTray.API
                 return null;
 
             var torrentInfo = JsonConvert.DeserializeObject<Torrent>(result);
-
-            return TimeSpan.FromSeconds(torrentInfo.SeedingTime);
+            return torrentInfo.SeedingTime / 86400;
         }
 
         private static async Task DeleteTorrents(List<string> hashes)
@@ -266,7 +265,11 @@ namespace qBittorrentTray.API
                 new KeyValuePair<string, string>("hashes", allHashes)
             };
 
-            await Post("/command/deletePerm", content);
+            if (SettingsManager.GetAction() == Actions.DeleteAll)
+                await Post("/command/deletePerm", content);
+
+            else
+                await Post("/command/delete", content);
         }
 
         private static async Task<bool> ContainsTorrent(string torrentName)

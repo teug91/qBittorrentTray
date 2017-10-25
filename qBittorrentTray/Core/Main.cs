@@ -12,6 +12,7 @@ namespace qBittorrentTray.Core
     public class Main
     {
         public TaskbarIcon notifyIcon;
+        private Timer checkSeedTimeTimer;
 
         /// <summary>
         /// Initializes API and tray icon.
@@ -33,10 +34,7 @@ namespace qBittorrentTray.Core
             notifyIcon = (TaskbarIcon) Application.Current.FindResource("NotifyIcon");
             notifyIcon.TrayBalloonTipClicked += TrayBalloonTipClicked;
 
-            Timer initializationTimer = new Timer(60000);
-            initializationTimer.Elapsed += CheckSeedTime;
-            initializationTimer.Enabled = true;
-            GC.KeepAlive(initializationTimer);
+            
         }
 
         private async void CheckSeedTime(object sender, ElapsedEventArgs e)
@@ -62,17 +60,32 @@ namespace qBittorrentTray.Core
         /// </summary>
         private async void Init()
         {
-            bool? loggedInn = await WebUiCommunicator.Login();
-            await WebUiCommunicator.DeleteAfterMaxSeedingTime();
+            if (checkSeedTimeTimer != null)
+                if (checkSeedTimeTimer.Enabled)
+                    checkSeedTimeTimer.Enabled = false;
 
-            if (loggedInn == null)
+            bool? loggedInn = await WebUiCommunicator.Login();
+
+            if (loggedInn == true)
             {
-                notifyIcon.ShowBalloonTip("Error", "qBittorrent is unreachable!", BalloonIcon.Error);
+                if (SettingsManager.GetAction() != Actions.Nothing)
+                {
+                    await WebUiCommunicator.DeleteAfterMaxSeedingTime();
+                    checkSeedTimeTimer = new Timer(3600000);
+                    checkSeedTimeTimer.Elapsed += CheckSeedTime;
+                    checkSeedTimeTimer.Enabled = true;
+                    GC.KeepAlive(checkSeedTimeTimer);
+                }
             }
 
             else if (loggedInn == false)
             {
                 notifyIcon.ShowBalloonTip("Error", "Username and/or password is wrong!", BalloonIcon.Error);
+            }
+
+            else
+            {
+                notifyIcon.ShowBalloonTip("Error", "qBittorrent is unreachable!", BalloonIcon.Error);
             }
         }
 
