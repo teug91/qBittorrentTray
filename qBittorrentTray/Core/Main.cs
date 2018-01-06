@@ -1,18 +1,19 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
-using qBittorrentTray.API;
 using qBittorrentTray.Properties;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
+using qBittorrentSharp;
 
 namespace qBittorrentTray.Core
 {
     public class Main
     {
         public TaskbarIcon notifyIcon;
-        private Timer checkSeedTimeTimer;
+        //private Timer checkSeedTimeTimer;
+		//
 
         /// <summary>
         /// Initializes API and tray icon.
@@ -20,13 +21,15 @@ namespace qBittorrentTray.Core
         public Main()
         {
             Settings.Default.SettingsSaving += SettingSaving;
+			//GUI.TrayIcon.Disconnected += ShowBalloon;
 
-            if (SettingsManager.GetHost() == null)
+
+			if (SettingsManager.GetHost() == null)
             {
                 Application.Current.MainWindow = new GUI.SettingsWindow();
                 Application.Current.MainWindow.Show();
                 Application.Current.MainWindow.Activate();
-            }
+			}
 
             else
                 Init();
@@ -37,10 +40,19 @@ namespace qBittorrentTray.Core
             
         }
 
-        private async void CheckSeedTime(object sender, ElapsedEventArgs e)
+        /*private async void CheckSeedTime(object sender, ElapsedEventArgs e)
         {
-            await WebUiCommunicator.DeleteAfterMaxSeedingTime();
-        }
+			try
+			{
+				await API.DeleteAfterMaxSeedTime(TimeSpan.FromDays(SettingsManager.GetMaxSeedingTime()),
+												 (SettingsManager.GetAction() == Actions.DeleteAll));
+			}
+
+			catch (QBTException ex)
+			{
+				notifyIcon.ShowBalloonTip("Error" + ex.HttpStatusCode.ToString(), ex.Message, BalloonIcon.Error);
+			}
+        }*/
 
         private void TrayBalloonTipClicked(object sender, RoutedEventArgs e)
         {
@@ -60,22 +72,25 @@ namespace qBittorrentTray.Core
         /// </summary>
         private async void Init()
         {
-            if (checkSeedTimeTimer != null)
+			/*if (checkSeedTimeTimer != null)
                 if (checkSeedTimeTimer.Enabled)
-                    checkSeedTimeTimer.Enabled = false;
+                    checkSeedTimeTimer.Enabled = false;*/
 
-            bool? loggedInn = await WebUiCommunicator.Login();
+			API.Initialize(SettingsManager.GetHost().ToString(), 10);
+
+            bool? loggedInn = await API.Login(SettingsManager.GetUsername(), SettingsManager.GetPassword());
 
             if (loggedInn == true)
             {
-                if (SettingsManager.GetAction() != Actions.Nothing)
+                /*if (SettingsManager.GetAction() != Actions.Nothing)
                 {
-                    await WebUiCommunicator.DeleteAfterMaxSeedingTime();
+					await API.DeleteAfterMaxSeedTime(TimeSpan.FromDays(SettingsManager.GetMaxSeedingTime()), 
+													 (SettingsManager.GetAction() == Actions.DeleteAll));
                     checkSeedTimeTimer = new Timer(3600000);
                     checkSeedTimeTimer.Elapsed += CheckSeedTime;
                     checkSeedTimeTimer.Enabled = true;
                     GC.KeepAlive(checkSeedTimeTimer);
-                }
+                }*/
             }
 
             else if (loggedInn == false)
@@ -95,13 +110,13 @@ namespace qBittorrentTray.Core
         /// <returns></returns>
         public static async Task PauseResume()
         {
-            bool? isPaused = await WebUiCommunicator.IsPaused();
+			bool? isPaused = await API.AreAllTorrentsPaused();
 
             if (isPaused == true)
-                await WebUiCommunicator.ResumeAll();
+                await API.ResumeAll();
 
             else if (isPaused == false)
-                await WebUiCommunicator.PauseAll();
+                await API.PauseAll();
         }
 
         /// <summary>
@@ -113,5 +128,10 @@ namespace qBittorrentTray.Core
         {
             Init();
         }
+
+		/*private void ShowBalloon(object sender, EventArgs e)
+		{
+			notifyIcon.ShowBalloonTip("Error", "Some error!", BalloonIcon.Error);
+		}*/
     }
 }

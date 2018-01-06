@@ -38,13 +38,15 @@
     <ApplicationIcon>qblight.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="qBittorrentSharp">
+      <HintPath>..\..\qBittorrentSharp\qBittorrentSharp\bin\Release\netstandard2.0\qBittorrentSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -55,13 +57,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="qblight.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\qBittorrentTray\qBittorrentTray.csproj">
       <Project>{96e5b2d0-00e7-4978-8f18-ee90dddb0dd3}</Project>
       <Name>qBittorrentTray</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="qblight.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

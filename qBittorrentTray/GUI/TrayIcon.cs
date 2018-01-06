@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using qBittorrentSharp;
+using qBittorrentTray.Core;
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -8,11 +12,15 @@ namespace qBittorrentTray.GUI
 {
     internal class TrayIcon : INotifyPropertyChanged
     {
-        string icon = "/qBittorrentTray;component/Resources/qbdark.ico";
+		//public TaskbarIcon notifyIcon;
+		//public static event EventHandler Disconnected;
+		string icon = "/qBittorrentTray;component/Resources/qbdark.ico";
 
         public TrayIcon()
         {
-            Timer initializationTimer = new Timer(1000);
+			//notifyIcon = (TaskbarIcon)Application.Current.FindResource("NotifyIcon");
+
+			Timer initializationTimer = new Timer(1000);
             initializationTimer.Elapsed += SetIcon;
             initializationTimer.Enabled = true;
             GC.KeepAlive(initializationTimer);
@@ -25,34 +33,67 @@ namespace qBittorrentTray.GUI
         /// <param name="e"></param>
         public async void SetIcon(object sender, ElapsedEventArgs e)
         {
-            if (API.WebUiCommunicator.IsLoggedIn())
-            {
-                bool? isPaused = await API.WebUiCommunicator.IsPaused();
+			try
+			{
+				bool? isPaused = await API.AreAllTorrentsPaused();
 
-                if (isPaused == false)
-                {
-                    Icon = "/qBittorrentTray;component/Resources/qbdark.ico";
-                    OnPropertyChanged("Icon");
-                }
+				if (isPaused == false)
+				{
+					Icon = "/qBittorrentTray;component/Resources/qbdark.ico";
+					OnPropertyChanged("Icon");
+				}
 
-                else if (isPaused == true)
-                {
-                    Icon = "/qBittorrentTray;component/Resources/pause.ico";
-                    OnPropertyChanged("Icon");
-                }
+				else if (isPaused == true)
+				{
+					Icon = "/qBittorrentTray;component/Resources/pause.ico";
+					OnPropertyChanged("Icon");
+				}
 
-                else
-                {
-                    Icon = "/qBittorrentTray;component/Resources/dc.ico";
-                    OnPropertyChanged("Icon");
-                }
-            }
-        }
+				else
+				{
+					Icon = "/qBittorrentTray;component/Resources/dc.ico";
+					OnPropertyChanged("Icon");
+				}
+			}
 
-        /// <summary>
-        ///     Shows a window, if none is already open.
-        /// </summary>
-        public ICommand ShowWindowCommand
+			/*catch (QBTException ex)
+			{
+				Debug.WriteLine(ex.Message);
+				if (Icon != "/qBittorrentTray;component/Resources/dc.ico")
+				{
+					Icon = "/qBittorrentTray;component/Resources/dc.ico";
+					OnPropertyChanged("Icon");
+					//Disconnected?.Invoke(ex, null);
+				}
+			}
+
+			catch (InvalidOperationException ex)
+			{
+				Debug.WriteLine(ex.Message);
+				if (Icon != "/qBittorrentTray;component/Resources/dc.ico")
+				{
+					Icon = "/qBittorrentTray;component/Resources/dc.ico";
+					OnPropertyChanged("Icon");
+					//Disconnected?.Invoke(ex, null);
+				}
+			}*/
+
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex.Message);
+				if (Icon != "/qBittorrentTray;component/Resources/dc.ico")
+				{
+					Icon = "/qBittorrentTray;component/Resources/dc.ico";
+					OnPropertyChanged("Icon");
+					//Disconnected?.Invoke(ex, null);
+				}
+			}
+		}
+
+		/// <summary>
+		///     Shows a window, if none is already open.
+		/// </summary>
+		public ICommand ShowWindowCommand
         {
             get
             {
@@ -104,8 +145,8 @@ namespace qBittorrentTray.GUI
                 {
                     CommandAction = () =>
                     {
-                        API.WebUiCommunicator.OpenWebUi();
-                    }
+						System.Diagnostics.Process.Start(SettingsManager.GetHost().ToString());
+					}
                 };
             }
         }
@@ -143,7 +184,7 @@ namespace qBittorrentTray.GUI
     }
 
     /// <summary>
-    ///     Simplistic delegate command for the demo.
+    ///     Delegate command
     /// </summary>
     public class DelegateCommand : ICommand
     {

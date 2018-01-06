@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using qBittorrentSharp;
 
 namespace TorrentOpener
 {
@@ -17,10 +18,11 @@ namespace TorrentOpener
 
         private static async Task AddTorrent(string filepath)
         {
-            bool? loggedIN = await qBittorrentTray.API.WebUiCommunicator.Login();
+			await Task.Delay(1000);
+            /*bool? loggedIN = await API.Login
 
             if (loggedIN == true)
-                await qBittorrentTray.API.WebUiCommunicator.AddTorrent(filepath);
+                await qBittorrentTray.API.WebUiCommunicator.AddTorrent(filepath);*/
         }
     }
 }
