@@ -4,8 +4,10 @@ System tray icon for qBittorrent WebUI.
 * Left-click pauses/resumes all torrents.
 * Double-click open WEB UI in browser.
 * Right click to change settings.
-* Opening a .torrent with TorrentOpener.exe adds torrent and deletes .torrent after.
 * Tray icon changes bases on status (active, paused, not available).
+
+## TODO
+* Opening a .torrent with TorrentOpener.exe adds torrent (and deletes .torrent after).
 
 
 ## Credit
