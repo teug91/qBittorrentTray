@@ -14,17 +14,21 @@ namespace qBittorrentTray
     {
         //private TaskbarIcon notifyIcon;
         private Main main;
+		static Mutex mutex = new Mutex(true, "{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}");
 
-        /// <summary>
-        /// Creates tray icon and starts listening for input.
-        /// </summary>
-        /// <param name="e"></param>
-        [STAThread]
+		/// <summary>
+		/// Creates tray icon and starts listening for input.
+		/// </summary>
+		/// <param name="e"></param>
+		[STAThread]
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
+			// Exit application if already running.
+			if (!mutex.WaitOne(TimeSpan.Zero, true))
+				Current.Shutdown();
 
-            main = new Main();
+			base.OnStartup(e);
+			main = new Main();
         }
 
         /// <summary>
@@ -36,23 +40,5 @@ namespace qBittorrentTray
             main.notifyIcon.Dispose();
             base.OnExit(e);
         }
-
-        /// 
-        /// check if given exe alread running or not
-        /// 
-        /// returns true if already running
-        private static bool IsAlreadyRunning()
-        {
-            string strLoc = Assembly.GetExecutingAssembly().Location;
-            FileSystemInfo fileInfo = new FileInfo(strLoc);
-            string sExeName = fileInfo.Name;
-            bool bCreatedNew;
-
-            Mutex mutex = new Mutex(true, "Global\\" + sExeName, out bCreatedNew);
-            if (bCreatedNew)
-                mutex.ReleaseMutex();
-
-            return !bCreatedNew;
-        }
-    }
+	}
 }

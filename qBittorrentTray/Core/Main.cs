@@ -77,30 +77,38 @@ namespace qBittorrentTray.Core
 
 			API.Initialize(SettingsManager.GetHost().ToString(), 10);
 
-            bool? loggedInn = await API.Login(SettingsManager.GetUsername(), Security.ToInsecureString(Security.DecryptString(SettingsManager.GetPassword())));
+			try
+			{
+				bool? loggedInn = await API.Login(SettingsManager.GetUsername(), Security.ToInsecureString(Security.DecryptString(SettingsManager.GetPassword())));
 
-            if (loggedInn == true)
-            {
-                if (SettingsManager.GetAction() != Actions.Nothing)
-                {
-					await API.DeleteAfterMaxSeedTime(TimeSpan.FromDays(SettingsManager.GetMaxSeedingTime()), 
-													 (SettingsManager.GetAction() == Actions.DeleteAll));
-                    checkSeedTimeTimer = new Timer(3600000);
-                    checkSeedTimeTimer.Elapsed += CheckSeedTime;
-                    checkSeedTimeTimer.Enabled = true;
-                    GC.KeepAlive(checkSeedTimeTimer);
-                }
-            }
+				if (loggedInn == true)
+				{
+					if (SettingsManager.GetAction() != Actions.Nothing)
+					{
+						await API.DeleteAfterMaxSeedTime(TimeSpan.FromDays(SettingsManager.GetMaxSeedingTime()),
+														 (SettingsManager.GetAction() == Actions.DeleteAll));
+						checkSeedTimeTimer = new Timer(3600000);
+						checkSeedTimeTimer.Elapsed += CheckSeedTime;
+						checkSeedTimeTimer.Enabled = true;
+						GC.KeepAlive(checkSeedTimeTimer);
+					}
+				}
 
-            else if (loggedInn == false)
-            {
-                notifyIcon.ShowBalloonTip("Error", "Username and/or password is wrong!", BalloonIcon.Error);
-            }
+				else if (loggedInn == false)
+				{
+					notifyIcon.ShowBalloonTip("Error", "Authorization failure!", BalloonIcon.Error);
+				}
 
-            else
-            {
-                notifyIcon.ShowBalloonTip("Error", "qBittorrent is unreachable!", BalloonIcon.Error);
-            }
+				else
+				{
+					notifyIcon.ShowBalloonTip("Error", "qBittorrent is unreachable!", BalloonIcon.Error);
+				}
+			}
+
+			catch (Exception)
+			{
+				notifyIcon.ShowBalloonTip("Error", "qBittorrent is unreachable!", BalloonIcon.Error);
+			}
         }
 
         /// <summary>
