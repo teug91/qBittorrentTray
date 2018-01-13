@@ -12,8 +12,7 @@ namespace qBittorrentTray.Core
     public class Main
     {
         public TaskbarIcon notifyIcon;
-        //private Timer checkSeedTimeTimer;
-		//
+        private Timer checkSeedTimeTimer;
 
         /// <summary>
         /// Initializes API and tray icon.
@@ -40,7 +39,7 @@ namespace qBittorrentTray.Core
             
         }
 
-        /*private async void CheckSeedTime(object sender, ElapsedEventArgs e)
+        private async void CheckSeedTime(object sender, ElapsedEventArgs e)
         {
 			try
 			{
@@ -52,7 +51,7 @@ namespace qBittorrentTray.Core
 			{
 				notifyIcon.ShowBalloonTip("Error" + ex.HttpStatusCode.ToString(), ex.Message, BalloonIcon.Error);
 			}
-        }*/
+        }
 
         private void TrayBalloonTipClicked(object sender, RoutedEventArgs e)
         {
@@ -72,17 +71,17 @@ namespace qBittorrentTray.Core
         /// </summary>
         private async void Init()
         {
-			/*if (checkSeedTimeTimer != null)
+			if (checkSeedTimeTimer != null)
                 if (checkSeedTimeTimer.Enabled)
-                    checkSeedTimeTimer.Enabled = false;*/
+                    checkSeedTimeTimer.Enabled = false;
 
 			API.Initialize(SettingsManager.GetHost().ToString(), 10);
 
-            bool? loggedInn = await API.Login(SettingsManager.GetUsername(), SettingsManager.GetPassword());
+            bool? loggedInn = await API.Login(SettingsManager.GetUsername(), Security.ToInsecureString(Security.DecryptString(SettingsManager.GetPassword())));
 
             if (loggedInn == true)
             {
-                /*if (SettingsManager.GetAction() != Actions.Nothing)
+                if (SettingsManager.GetAction() != Actions.Nothing)
                 {
 					await API.DeleteAfterMaxSeedTime(TimeSpan.FromDays(SettingsManager.GetMaxSeedingTime()), 
 													 (SettingsManager.GetAction() == Actions.DeleteAll));
@@ -90,7 +89,7 @@ namespace qBittorrentTray.Core
                     checkSeedTimeTimer.Elapsed += CheckSeedTime;
                     checkSeedTimeTimer.Enabled = true;
                     GC.KeepAlive(checkSeedTimeTimer);
-                }*/
+                }
             }
 
             else if (loggedInn == false)

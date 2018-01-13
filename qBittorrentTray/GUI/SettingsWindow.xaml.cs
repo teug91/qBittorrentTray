@@ -73,7 +73,7 @@ namespace qBittorrentTray.GUI
 
             else
             {
-                SettingsManager.SaveSettings(newHost, UsernameTextBox.Text, PasswordTextBox.Password,
+                SettingsManager.SaveSettings(newHost, UsernameTextBox.Text, Security.EncryptString(Security.ToSecureString(PasswordTextBox.Password)),
                     (int) DaysComboBox.SelectedItem, (string) ActionComboBox.SelectedItem, autoStart);
                 Close();
             }
