@@ -12,5 +12,6 @@ System tray icon for qBittorrent WebUI.
 
 ## Credit
 * [qBittorrent](https://github.com/qbittorrent/qBittorrent) - A BitTorrent client in Qt
+* [qBittorrentSharp](https://github.com/teug91/qBittorrentSharp) - C# library to work with the qBittorrent WebUI API
 * [Hardcodet.NotifyIcon.Wpf](http://www.hardcodet.net/wpf-notifyicon) - Used for tray icon
 * [Json.NET](https://www.newtonsoft.com/json) - Popular high-performance JSON framework for .NET
