@@ -23,7 +23,9 @@ namespace qBittorrentTray.GUI
             if (SettingsManager.GetPassword() != null)
                 PasswordTextBox.Password = SettingsManager.GetPassword();
 
-            InitializeAutoStartCheckbox();
+			deleteTorrentCheckbox.IsChecked = SettingsManager.GetDeleteTorrent();
+
+			InitializeAutoStartCheckbox();
 
             InitializeCheckBox();
         }
@@ -67,14 +69,14 @@ namespace qBittorrentTray.GUI
             if (autostartCheckbox.Visibility == Visibility.Visible)
                 autoStart = autostartCheckbox.IsChecked;
 
-            Uri newHost;
+			Uri newHost;
             if (!Uri.TryCreate(HostTextBox.Text, UriKind.Absolute, out newHost))
                 InvalidHost.Visibility = Visibility.Visible;
 
             else
             {
                 SettingsManager.SaveSettings(newHost, UsernameTextBox.Text, Security.EncryptString(Security.ToSecureString(PasswordTextBox.Password)),
-                    (int) DaysComboBox.SelectedItem, (string) ActionComboBox.SelectedItem, autoStart);
+                    (int) DaysComboBox.SelectedItem, (string) ActionComboBox.SelectedItem, deleteTorrentCheckbox.IsChecked == true, autoStart);
                 Close();
             }
         }

@@ -1,6 +1,8 @@
 ﻿using qBittorrentTray.Core;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.IO.Pipes;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -14,22 +16,70 @@ namespace qBittorrentTray
     {
         //private TaskbarIcon notifyIcon;
         private Main main;
-		static Mutex mutex = new Mutex(true, "{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}");
+		private static readonly string id = "{8F6F0AC4-B9A2-45fd-A8CF-72F03E7BDE5F}";
+		static Mutex mutex = new Mutex(true, id);
+		private Thread listen;
+
 
 		/// <summary>
 		/// Creates tray icon and starts listening for input.
 		/// </summary>
 		/// <param name="e"></param>
 		[STAThread]
-        protected override void OnStartup(StartupEventArgs e)
-        {
+		protected override void OnStartup(StartupEventArgs e)
+		{
+			List<string> filePaths = new List<string>();
+
+			if (e.Args != null)
+				filePaths = new List<string>(e.Args);
+
 			// Exit application if already running.
 			if (!mutex.WaitOne(TimeSpan.Zero, true))
+			{
+				if (e.Args != null)
+				{
+					NamedPipeClientStream client = new NamedPipeClientStream(id);
+					client.Connect(10000);
+
+					using (var writer = new BinaryWriter(client))
+					{
+						if (filePaths.Count != 0)
+						{
+							string filePathsString = "";
+							foreach (string filePath in filePaths)
+								filePathsString += filePath + "\n";
+
+							filePathsString = filePathsString.Remove(filePathsString.Length - 1);
+							writer.Write(filePathsString);
+						}
+					}
+				}
+
 				Current.Shutdown();
+			}
 
 			base.OnStartup(e);
-			main = new Main();
-        }
+			main = new Main(new List<string>(e.Args));
+
+			listen = new Thread(() =>
+			{
+				NamedPipeServerStream server = new NamedPipeServerStream(id);
+				while (true)
+				{
+					server.WaitForConnection();
+
+					using (var reader = new BinaryReader(server))
+					{
+						string arguments = reader.ReadString();
+						filePaths = new List<string>(arguments.Split('\n'));
+						main.AddTorrents(filePaths);
+					}
+				}
+			});
+
+			listen.IsBackground = true;
+			listen.Start();
+		}
 
         /// <summary>
         /// Makes sure tray icon is removed when application exits.
@@ -39,6 +89,6 @@ namespace qBittorrentTray
         {
             main.notifyIcon.Dispose();
             base.OnExit(e);
-        }
+		}
 	}
 }

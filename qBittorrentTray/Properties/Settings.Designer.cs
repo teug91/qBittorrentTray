@@ -25,7 +25,6 @@ namespace qBittorrentTray.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.1.170:8080")]
         public global::System.Uri Host {
             get {
                 return ((global::System.Uri)(this["Host"]));
@@ -37,7 +36,7 @@ namespace qBittorrentTray.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Ugle")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Username {
             get {
                 return ((string)(this["Username"]));
@@ -49,7 +48,7 @@ namespace qBittorrentTray.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAtcOvSHTcw0yyHnSUXOjrOQAAAAACAAAAAAAQZgAAAAEAACAAAAAQsWbgRORfutyFuxgmfOC2TknA10fNgFrCEKKlwiwI6AAAAAAOgAAAAAIAACAAAAA1zVG5Sgan6pwOK87Wu0y7NAicJqDfI3Ry2OSul7rMjiAAAAAR1owqGruarYEok3c9ieX0gAlpOhZ4hVki1C0v1oF+dUAAAABco1xltznPV7AwcBSyzF9k0hn4oAdNFWvnI8Wmrz27E6hsGqCJb2ILZ36vSPcLANdfgP16A8Oxf6b5qzNAvt+s")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Password {
             get {
                 return ((string)(this["Password"]));
@@ -80,6 +79,18 @@ namespace qBittorrentTray.Properties {
             }
             set {
                 this["Action"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DeleteTorrent {
+            get {
+                return ((bool)(this["DeleteTorrent"]));
+            }
+            set {
+                this["DeleteTorrent"] = value;
             }
         }
     }

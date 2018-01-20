@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using qBittorrentSharp;
+using System.Collections.Generic;
+using System.IO;
 
 namespace qBittorrentTray.Core
 {
@@ -17,11 +19,9 @@ namespace qBittorrentTray.Core
         /// <summary>
         /// Initializes API and tray icon.
         /// </summary>
-        public Main()
+        public Main(List<string> filePaths)
         {
             Settings.Default.SettingsSaving += SettingSaving;
-			//GUI.TrayIcon.Disconnected += ShowBalloon;
-
 
 			if (SettingsManager.GetHost() == null)
             {
@@ -31,7 +31,7 @@ namespace qBittorrentTray.Core
 			}
 
             else
-                Init();
+                Init(filePaths);
 
             notifyIcon = (TaskbarIcon) Application.Current.FindResource("NotifyIcon");
             notifyIcon.TrayBalloonTipClicked += TrayBalloonTipClicked;
@@ -69,7 +69,7 @@ namespace qBittorrentTray.Core
         /// <summary>
         /// Initializes API.
         /// </summary>
-        private async void Init()
+        private async void Init(List<string> filePaths = null)
         {
 			if (checkSeedTimeTimer != null)
                 if (checkSeedTimeTimer.Enabled)
@@ -92,6 +92,9 @@ namespace qBittorrentTray.Core
 						checkSeedTimeTimer.Enabled = true;
 						GC.KeepAlive(checkSeedTimeTimer);
 					}
+
+					if (filePaths != null)
+						 AddTorrents(filePaths);
 				}
 
 				else if (loggedInn == false)
@@ -136,9 +139,27 @@ namespace qBittorrentTray.Core
             Init();
         }
 
-		/*private void ShowBalloon(object sender, EventArgs e)
+		public async void AddTorrents(List<string> filePaths)
 		{
-			notifyIcon.ShowBalloonTip("Error", "Some error!", BalloonIcon.Error);
-		}*/
+			try
+			{
+				await API.DownloadFromDisk(filePaths);
+
+				if (SettingsManager.GetDeleteTorrent())
+					foreach (string filePath in filePaths)
+						if (File.Exists(filePath))
+							File.Delete(filePath);
+			}
+
+			catch (QBTException ex)
+			{
+				notifyIcon.ShowBalloonTip("Error", ex.Message, BalloonIcon.Error);
+			}
+
+			catch (Exception ex)
+			{
+				notifyIcon.ShowBalloonTip("Error", ex.Message, BalloonIcon.Error);
+			}
+		}
     }
 }

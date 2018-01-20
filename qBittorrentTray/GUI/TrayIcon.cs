@@ -1,5 +1,4 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
-using qBittorrentSharp;
+﻿using qBittorrentSharp;
 using qBittorrentTray.Core;
 using System;
 using System.ComponentModel;

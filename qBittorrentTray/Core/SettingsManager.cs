@@ -32,11 +32,16 @@ namespace qBittorrentTray.Core
             return Settings.Default.Action;
         }
 
-        /// <summary>
-        /// Gets autostart setting. Fixes path, If path in registry key is wrong.
-        /// </summary>
-        /// <returns>True if activated, null if no access to registry.</returns>
-        internal static bool? GetAutoStart()
+		internal static bool GetDeleteTorrent()
+		{
+			return Settings.Default.DeleteTorrent;
+		}
+
+		/// <summary>
+		/// Gets autostart setting. Fixes path, If path in registry key is wrong.
+		/// </summary>
+		/// <returns>True if activated, null if no access to registry.</returns>
+		internal static bool? GetAutoStart()
         {
             try
             {
@@ -68,7 +73,7 @@ namespace qBittorrentTray.Core
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="autoStart"></param>
-        internal static void SaveSettings(Uri host, string username, string password, int MaxSeedDays, string action, bool? autoStart = null)
+        internal static void SaveSettings(Uri host, string username, string password, int MaxSeedDays, string action, bool deleteTorrent, bool? autoStart = null)
         {
             var hostString = host.ToString();
             if (hostString[hostString.Length - 1] != '/')
@@ -83,6 +88,7 @@ namespace qBittorrentTray.Core
             Settings.Default.Password = password;
             Settings.Default.MaxSeedingDays = MaxSeedDays;
             Settings.Default.Action = action;
+			Settings.Default.DeleteTorrent = deleteTorrent;
 
 
             if (autoStart != null)
