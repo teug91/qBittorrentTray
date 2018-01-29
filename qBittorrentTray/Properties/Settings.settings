@@ -3,22 +3,22 @@
   <Profiles />
   <Settings>
     <Setting Name="Host" Type="System.Uri" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">http://192.168.1.170:8080</Value>
     </Setting>
     <Setting Name="Username" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Ugle</Value>
     </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAtcOvSHTcw0yyHnSUXOjrOQAAAAACAAAAAAAQZgAAAAEAACAAAAAQsWbgRORfutyFuxgmfOC2TknA10fNgFrCEKKlwiwI6AAAAAAOgAAAAAIAACAAAAA1zVG5Sgan6pwOK87Wu0y7NAicJqDfI3Ry2OSul7rMjiAAAAAR1owqGruarYEok3c9ieX0gAlpOhZ4hVki1C0v1oF+dUAAAABco1xltznPV7AwcBSyzF9k0hn4oAdNFWvnI8Wmrz27E6hsGqCJb2ILZ36vSPcLANdfgP16A8Oxf6b5qzNAvt+s</Value>
     </Setting>
     <Setting Name="MaxSeedingDays" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">15</Value>
     </Setting>
     <Setting Name="Action" Type="System.String" Scope="User">
       <Value Profile="(Default)">Do nothing</Value>
     </Setting>
     <Setting Name="DeleteTorrent" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -38,13 +38,12 @@ namespace qBittorrentTray
 			{
 				if (e.Args != null)
 				{
-					NamedPipeClientStream client = new NamedPipeClientStream(id);
-					client.Connect(10000);
-
+					using (var client = new NamedPipeClientStream(id))
 					using (var writer = new BinaryWriter(client))
 					{
 						if (filePaths.Count != 0)
 						{
+							client.Connect(3000);
 							string filePathsString = "";
 							foreach (string filePath in filePaths)
 								filePathsString += filePath + "\n";
@@ -58,27 +57,32 @@ namespace qBittorrentTray
 				Current.Shutdown();
 			}
 
-			base.OnStartup(e);
-			main = new Main(new List<string>(e.Args));
-
-			listen = new Thread(() =>
+			else
 			{
-				NamedPipeServerStream server = new NamedPipeServerStream(id);
-				while (true)
+				base.OnStartup(e);
+				main = new Main(new List<string>(e.Args));
+
+				listen = new Thread(() =>
 				{
-					server.WaitForConnection();
-
-					using (var reader = new BinaryReader(server))
+					while (true)
 					{
-						string arguments = reader.ReadString();
-						filePaths = new List<string>(arguments.Split('\n'));
-						main.AddTorrents(filePaths);
-					}
-				}
-			});
+						using (NamedPipeServerStream server = new NamedPipeServerStream(id))
+						{
+							server.WaitForConnection();
 
-			listen.IsBackground = true;
-			listen.Start();
+							using (var reader = new BinaryReader(server))
+							{
+								string arguments = reader.ReadString();
+								filePaths = new List<string>(arguments.Split('\n'));
+								main.AddTorrents(filePaths);
+							}
+						}
+					}
+				});
+
+				listen.IsBackground = true;
+				listen.Start();
+			}
 		}
 
         /// <summary>

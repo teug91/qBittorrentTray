@@ -63,9 +63,9 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero2" />
-    <Reference Include="qBittorrentSharp, Version=0.2.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="qBittorrentSharp, Version=0.2.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\qBittorrentSharp\qBittorrentSharp.dll</HintPath>
+      <HintPath>..\..\qBittorrentSharp\qBittorrentSharp\bin\Debug\netstandard2.0\qBittorrentSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
