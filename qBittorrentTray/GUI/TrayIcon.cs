@@ -55,28 +55,6 @@ namespace qBittorrentTray.GUI
 				}
 			}
 
-			/*catch (QBTException ex)
-			{
-				Debug.WriteLine(ex.Message);
-				if (Icon != "/qBittorrentTray;component/Resources/dc.ico")
-				{
-					Icon = "/qBittorrentTray;component/Resources/dc.ico";
-					OnPropertyChanged("Icon");
-					//Disconnected?.Invoke(ex, null);
-				}
-			}
-
-			catch (InvalidOperationException ex)
-			{
-				Debug.WriteLine(ex.Message);
-				if (Icon != "/qBittorrentTray;component/Resources/dc.ico")
-				{
-					Icon = "/qBittorrentTray;component/Resources/dc.ico";
-					OnPropertyChanged("Icon");
-					//Disconnected?.Invoke(ex, null);
-				}
-			}*/
-
 			catch (Exception ex)
 			{
 				Debug.WriteLine(ex.Message);

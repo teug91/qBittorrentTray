@@ -41,16 +41,7 @@ namespace qBittorrentTray.Core
 
         private async void CheckSeedTime(object sender, ElapsedEventArgs e)
         {
-			try
-			{
-				await API.DeleteAfterMaxSeedTime(TimeSpan.FromDays(SettingsManager.GetMaxSeedingTime()),
-												 (SettingsManager.GetAction() == Actions.DeleteAll));
-			}
-
-			catch (QBTException ex)
-			{
-				notifyIcon.ShowBalloonTip("Error" + ex.HttpStatusCode.ToString(), ex.Message, BalloonIcon.Error);
-			}
+			await DeleteTorrents();
         }
 
         private void TrayBalloonTipClicked(object sender, RoutedEventArgs e)
@@ -83,15 +74,11 @@ namespace qBittorrentTray.Core
 
 				if (loggedInn == true)
 				{
-					if (SettingsManager.GetAction() != Actions.Nothing)
-					{
-						await API.DeleteAfterMaxSeedTime(TimeSpan.FromDays(SettingsManager.GetMaxSeedingTime()),
-														 (SettingsManager.GetAction() == Actions.DeleteAll));
-						checkSeedTimeTimer = new Timer(3600000);
-						checkSeedTimeTimer.Elapsed += CheckSeedTime;
-						checkSeedTimeTimer.Enabled = true;
-						GC.KeepAlive(checkSeedTimeTimer);
-					}
+					await DeleteTorrents();	
+					checkSeedTimeTimer = new Timer(60000);
+					checkSeedTimeTimer.Elapsed += CheckSeedTime;
+					checkSeedTimeTimer.Enabled = true;
+					GC.KeepAlive(checkSeedTimeTimer);
 
 					if (filePaths != null)
 						 AddTorrents(filePaths);
@@ -159,6 +146,24 @@ namespace qBittorrentTray.Core
 			catch (Exception ex)
 			{
 				notifyIcon.ShowBalloonTip("Error", ex.Message, BalloonIcon.Error);
+			}
+		}
+
+		private async Task DeleteTorrents()
+		{
+			try
+			{
+				if (SettingsManager.GetAction() != Actions.Nothing)
+					await API.DeleteAfterMaxSeedTime(TimeSpan.FromDays(SettingsManager.GetMaxSeedingTime()),
+													(SettingsManager.GetAction() == Actions.DeleteAll));
+
+				if (SettingsManager.GetRatioAction() != Actions.Nothing)
+					await API.DeleteAfterMaxRatio(SettingsManager.GetMaxRatio(), (SettingsManager.GetRatioAction() == Actions.DeleteAll));
+			}
+
+			catch (QBTException ex)
+			{
+				notifyIcon.ShowBalloonTip("Error" + ex.HttpStatusCode.ToString(), ex.Message, BalloonIcon.Error);
 			}
 		}
     }

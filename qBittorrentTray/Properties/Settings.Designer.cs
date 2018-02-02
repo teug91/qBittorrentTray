@@ -60,6 +60,7 @@ namespace qBittorrentTray.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int MaxSeedingDays {
             get {
                 return ((int)(this["MaxSeedingDays"]));
@@ -90,6 +91,30 @@ namespace qBittorrentTray.Properties {
             }
             set {
                 this["DeleteTorrent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float MaxRatio {
+            get {
+                return ((float)(this["MaxRatio"]));
+            }
+            set {
+                this["MaxRatio"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Do nothing")]
+        public string RatioAction {
+            get {
+                return ((string)(this["RatioAction"]));
+            }
+            set {
+                this["RatioAction"] = value;
             }
         }
     }

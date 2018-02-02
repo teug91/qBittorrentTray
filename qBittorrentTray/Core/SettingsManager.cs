@@ -37,6 +37,16 @@ namespace qBittorrentTray.Core
 			return Settings.Default.DeleteTorrent;
 		}
 
+		internal static float GetMaxRatio()
+		{
+			return Settings.Default.MaxRatio;
+		}
+
+		internal static string GetRatioAction()
+		{
+			return Settings.Default.RatioAction;
+		}
+
 		/// <summary>
 		/// Gets autostart setting. Fixes path, If path in registry key is wrong.
 		/// </summary>
@@ -73,7 +83,7 @@ namespace qBittorrentTray.Core
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="autoStart"></param>
-        internal static void SaveSettings(Uri host, string username, string password, int MaxSeedDays, string action, bool deleteTorrent, bool? autoStart = null)
+        internal static void SaveSettings(Uri host, string username, string password, int MaxSeedDays, string action, string ratioAction, bool deleteTorrent, float maxRatio, bool? autoStart = null)
         {
             var hostString = host.ToString();
             if (hostString[hostString.Length - 1] != '/')
@@ -85,13 +95,16 @@ namespace qBittorrentTray.Core
                 Settings.Default.Host = host;
 
             Settings.Default.Username = username;
-            Settings.Default.Password = password;
+			if (password != "")
+				Settings.Default.Password = password;
             Settings.Default.MaxSeedingDays = MaxSeedDays;
             Settings.Default.Action = action;
+			Settings.Default.RatioAction = ratioAction;
 			Settings.Default.DeleteTorrent = deleteTorrent;
+			Settings.Default.MaxRatio = maxRatio;
 
 
-            if (autoStart != null)
+			if (autoStart != null)
                 SetAutoStart(autoStart);
 
             Settings.Default.Save();

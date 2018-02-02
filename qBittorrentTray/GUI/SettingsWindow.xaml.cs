@@ -1,6 +1,7 @@
 ﻿using qBittorrentTray.Core;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 
 namespace qBittorrentTray.GUI
@@ -36,13 +37,22 @@ namespace qBittorrentTray.GUI
             ActionComboBox.Items.Add(Actions.Delete);
             ActionComboBox.Items.Add(Actions.DeleteAll);
 
-            ActionComboBox.SelectedItem = SettingsManager.GetAction();
+			ActionComboBox_Ratio.Items.Add(Actions.Nothing);
+			ActionComboBox_Ratio.Items.Add(Actions.Delete);
+			ActionComboBox_Ratio.Items.Add(Actions.DeleteAll);
 
-            for (var i = 0; i < 100; i++)
+			ActionComboBox.SelectedItem = SettingsManager.GetAction();
+			ActionComboBox_Ratio.SelectedItem = SettingsManager.GetRatioAction();
+
+			for (var i = 0; i < 100; i++)
                 DaysComboBox.Items.Add(i);
 
-            DaysComboBox.SelectedItem = SettingsManager.GetMaxSeedingTime();
-        }
+			for (double i = 0; i < 9.9; i += 0.1)
+				RatioComboBox.Items.Add(i.ToString("N1"));
+
+			DaysComboBox.SelectedItem = SettingsManager.GetMaxSeedingTime();
+			RatioComboBox.SelectedIndex = (int)(SettingsManager.GetMaxRatio() * 10);
+		}
 
         /// <summary>
         /// Sets checkbox to value from settings.
@@ -75,8 +85,13 @@ namespace qBittorrentTray.GUI
 
             else
             {
-                SettingsManager.SaveSettings(newHost, UsernameTextBox.Text, Security.EncryptString(Security.ToSecureString(PasswordTextBox.Password)),
-                    (int) DaysComboBox.SelectedItem, (string) ActionComboBox.SelectedItem, deleteTorrentCheckbox.IsChecked == true, autoStart);
+				var password = "";
+				if (PasswordTextBox.Password != SettingsManager.GetPassword())
+					password = Security.EncryptString(Security.ToSecureString(PasswordTextBox.Password));
+
+				SettingsManager.SaveSettings(newHost, UsernameTextBox.Text, password,
+                    (int) DaysComboBox.SelectedItem, (string) ActionComboBox.SelectedItem, (string)ActionComboBox_Ratio.SelectedItem,
+					deleteTorrentCheckbox.IsChecked == true, float.Parse(RatioComboBox.SelectedItem.ToString()), autoStart);
                 Close();
             }
         }
