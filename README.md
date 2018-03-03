@@ -5,10 +5,7 @@ System tray icon for qBittorrent WebUI.
 * Double-click open WEB UI in browser.
 * Right click to change settings.
 * Tray icon changes bases on status (active, paused, not available).
-
-## TODO
-* Opening a .torrent with TorrentOpener.exe adds torrent (and deletes .torrent after).
-
+* Opening a .torrent with TorrentOpener.exe adds torrent (and deletes .torrent after if set in settings).
 
 ## Credit
 * [qBittorrent](https://github.com/qbittorrent/qBittorrent) - A BitTorrent client in Qt
