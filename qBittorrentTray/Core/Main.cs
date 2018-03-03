@@ -35,8 +35,7 @@ namespace qBittorrentTray.Core
 
             notifyIcon = (TaskbarIcon) Application.Current.FindResource("NotifyIcon");
             notifyIcon.TrayBalloonTipClicked += TrayBalloonTipClicked;
-
-            
+			API.Disconnected += Relog;
         }
 
         private async void CheckSeedTime(object sender, ElapsedEventArgs e)
@@ -165,6 +164,11 @@ namespace qBittorrentTray.Core
 			{
 				notifyIcon.ShowBalloonTip("Error" + ex.HttpStatusCode.ToString(), ex.Message, BalloonIcon.Error);
 			}
+		}
+
+		private async void Relog(object sender, EventArgs e)
+		{
+			await API.Login(SettingsManager.GetUsername(), Security.ToInsecureString(Security.DecryptString(SettingsManager.GetPassword())));
 		}
     }
 }

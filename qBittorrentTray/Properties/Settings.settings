@@ -12,16 +12,16 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="MaxSeedingDays" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">-1</Value>
     </Setting>
     <Setting Name="Action" Type="System.String" Scope="User">
       <Value Profile="(Default)">Do nothing</Value>
     </Setting>
     <Setting Name="DeleteTorrent" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="MaxRatio" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">1.1</Value>
     </Setting>
     <Setting Name="RatioAction" Type="System.String" Scope="User">
       <Value Profile="(Default)">Do nothing</Value>
